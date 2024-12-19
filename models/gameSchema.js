@@ -9,11 +9,11 @@ const gameSchema= mongoose.Schema({
     video:{type: String},
     // Relationships
     genre: [
-        { type: mongoose.SchemaTypes.ObjectId, ref: 'Genre' },
+        { type: mongoose.SchemaTypes.ObjectId, ref: 'Genre',required:true },
     ],
     publisher: { 
         type: mongoose.Schema.Types.ObjectId, 
-        ref: "Publisher", // Reference to Publisher schema
+        ref: "Publisher", 
         required: true,
     }
 },

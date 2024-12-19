@@ -13,7 +13,7 @@ router.get("/getpublishergames",publisherMiddleware, getPublisherGames);
 
 //publisher register and login
 router.post("/register", register);
-router.post("/login",publisherMiddleware,login);
+router.post("/login",login);
 
 //publisher info
 router.get("/", publisherMiddleware, getPublisherData);

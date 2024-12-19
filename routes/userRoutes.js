@@ -18,7 +18,7 @@ router.get("/getgame", getGame);
 
 //user register and login
 router.post("/register", register);
-router.post("/login",authMiddleware, login);
+router.post("/login", login);
 
 //user info
 router.get("/", authMiddleware, getUserData);

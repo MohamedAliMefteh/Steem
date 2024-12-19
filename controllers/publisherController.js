@@ -38,8 +38,10 @@ const register = async (req, res) => {
       const { email, password } = req.body;
   
       const publisherExist = await Publisher.findOne({ email });
-      if (!publisherExist)
-        res.status(400).json({ msg: "publisher not found ,try to register" });
+      
+      if (!publisherExist){
+        return res.status(400).json({ msg: "publisher not found ,try to register" });
+      }
       else {
         const checkPW = await bcrypt.compare(password, publisherExist.password);
         if (!checkPW) res.status(400).json("wrong password");
@@ -104,6 +106,11 @@ const createGame = async (req, res) => {
         if (gameExist){
          return res.status(400).json({ msg: "game already exist" });
         }
+        const publisherExist = await Publisher.findOne({ _id:req.publisherId });
+      
+      if (!publisherExist){
+        return res.status(400).json({ msg: "publisher not found ,try to register" });
+      }
       const newGame = await Game.create({
         title: title,
         description: description,

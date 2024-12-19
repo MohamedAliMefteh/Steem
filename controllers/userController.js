@@ -119,7 +119,7 @@ const getGame = async (req, res) => {
     const games = await Game.find(
       {},
       "title price description releasedate genre publisher"
-    ).populate("publisher", "companyname description");
+    ).populate("publisher", "companyname description").populate("genre","title");
     res.status(201).json({ msg: "get all games", games: games });
   } catch (error) {
     res
@@ -132,13 +132,23 @@ const getGame = async (req, res) => {
 const createOrder = async (req, res) => {
   try {
 
+    const userExist = await User.findOne({ _id:req.userId });
+    if (!userExist)
+      {return res.status(400).json({ msg: "user not found ,try to register" })}
+
+    
+
     const { gameList } = req.body;
     const gamesToBuy = await Game.find(
       { _id: { $in: gameList } },
       "price publisher"
     ).populate("publisher", "_id ");
-
-
+    const userLibrary=await Library.findOne({user:req.userId},("games"))
+    
+    if((gameList.some(elem => userLibrary.games.includes(elem)))){
+      
+      return res.status(400).json({msg:"one or multiple games are already in user library!!!"})
+    }
 
     const userBalance = await User.findOne({ _id: req.userId }, "balance");
     const totalPrice = gamesToBuy.reduce((sum, game) => sum + game.price, 0);
@@ -167,7 +177,7 @@ const createOrder = async (req, res) => {
         );
       }
       //function so that the games that are ordered get added to the library of the user
-      const userLibrary=await Library.findOne({user:req.userId},("games"))
+      
       let newUserLibrary=userLibrary.games.concat(gameList)
       await Library.findOneAndUpdate(
         { user: req.userId },
@@ -233,7 +243,7 @@ const getUserWishlist = async (req, res) => {
   }
 };
 
-//update free games to library function
+//add free games to library function
 const updateUserLibrary = async (req, res) => {
   try {
     const userId = req.userId;

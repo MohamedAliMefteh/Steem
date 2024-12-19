@@ -18,6 +18,8 @@ mongoose.connect(dbURI)
 app.use("/api/user",require("./routes/userRoutes"))
 //publisher routes config
 app.use("/api/publisher",require("./routes/publisherRoutes"))
+//admin routes config
+app.use("/api/admin",require("./routes/adminRoutes"))
 
 
 
