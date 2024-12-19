@@ -62,7 +62,7 @@ const register = async (req, res) => {
   //get publisher data function
   const getPublisherData = async (req, res) => {
     try {
-      const publisher = await Publisher.findOne({ _id: req.publisherId },("comapanyname email description createdAt updatedAt"));
+      const publisher = await Publisher.findOne({ _id: req.publisherId },("companyname email description createdAt updatedAt"));
       
       if (!publisher)
         res.status(400).json({ msg: "publisher does not exist try to register" });

@@ -131,29 +131,33 @@ const getGame = async (req, res) => {
 //create order function
 const createOrder = async (req, res) => {
   try {
+
     const { gameList } = req.body;
     const gamesToBuy = await Game.find(
       { _id: { $in: gameList } },
       "price publisher"
     ).populate("publisher", "_id ");
 
+
+
     const userBalance = await User.findOne({ _id: req.userId }, "balance");
     const totalPrice = gamesToBuy.reduce((sum, game) => sum + game.price, 0);
     if (userBalance.balance <= totalPrice) {
       res.status(400).json({ msg: "user balance is not enough" });
     } else {
+      //order creation for logs only to admins
       const newOrder = await Order.create({
         user: req.userId,
         games: gameList,
         totalPrice: totalPrice,
       });
-
+//removing the price of total games from user balance
       const newUserbalance = await User.findOneAndUpdate(
         { _id: req.userId },
         { $inc: { balance: -totalPrice } },
         { new: true }
       );
-
+//adding the balance spent by the user to each publisher owned by the game that has been bought
       for (const element of gamesToBuy) {
         const price = element.price;
         await Publisher.findOneAndUpdate(
@@ -162,6 +166,16 @@ const createOrder = async (req, res) => {
           { new: true }
         );
       }
+      //function so that the games that are ordered get added to the library of the user
+      const userLibrary=await Library.findOne({user:req.userId},("games"))
+      let newUserLibrary=userLibrary.games.concat(gameList)
+      await Library.findOneAndUpdate(
+        { user: req.userId },
+        { $addToSet:{games:newUserLibrary} },
+        { new: true, upsert: true }
+     )
+
+
       res.status(201).json({ msg: "order sent!!", order:newOrder,newUserBalance:newUserbalance.balance });
     }
   } catch (error) {
@@ -219,16 +233,21 @@ const getUserWishlist = async (req, res) => {
   }
 };
 
-//update library function
+//update free games to library function
 const updateUserLibrary = async (req, res) => {
   try {
     const userId = req.userId;
     const { gameId } = req.body;
-    console.log(gameId)
     const game = await Game.findById(gameId);
     const user = await User.findById(userId);
     if (!game || !user) {
       return res.status(404).json({ error: "Game or user not found" });
+    }
+    //check if the game is not free
+    else if(
+      game.price>0
+    ){
+      return res.status(404).json({ error: "please order the game first to add it to library" });
     }
     //MIGHT NEED TO ADD A CHECK IF THE GAME ALREADY IN LIBRARY
     //DUPLICATION WIL NOT HAPPEN THANKS TO ADDTOSET BUT
