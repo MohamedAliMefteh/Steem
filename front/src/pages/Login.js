@@ -19,17 +19,30 @@ const Login = () => {
   const onSubmit = (data) =>{
      dispatch(LoginUser(data))
    }
-   console.log(errors)
+  //  console.log(errors)
   return (
-    <>
-    <form onSubmit={handleSubmit(onSubmit)}>
-      
-      <input type="text" placeholder="Email" {...register("email", {required: true, pattern: /^\S+@\S+$/i})} />
-      <input type="password" placeholder="password" {...register("password", {required: true})} />
 
-      <input type="submit" />
+    <div className='formcontainer'>
+      
+    <form onSubmit={handleSubmit(onSubmit)} className='form'>
+      <div className='formtitle'>
+        <h1 >Create Account</h1>
+      </div>
+      <div>
+        <h3>Email:</h3>
+        <input type="text" placeholder="Email" {...register("email", {required: true, pattern: /^\S+@\S+$/i})} />
+      </div>
+      <div>
+        <h3>Password:</h3>
+        <input type="password" placeholder="password" {...register("password", {required: true})} />
+      </div>
+      <div>
+      <input type="submit" className='submit' />
+      </div>
     </form>
-    </>
+  </div>
+
+  
   )
 }
 

@@ -33,7 +33,9 @@ const gameSlice=createSlice({
         gameinfo:{},
 
     },
-reducers:{},
+reducers:{
+
+},
 extraReducers:(builder)=>{
     builder
     .addCase(GetAllGames.pending,(state)=>{
@@ -43,14 +45,9 @@ extraReducers:(builder)=>{
     .addCase(GetAllGames.fulfilled,(state,action)=>{
         state.isLoading=false
         state.error=null
-        const sortByDate = (a,b)=>{
-            const dateA = new Date(a.releasedate)
-            const dateB = new Date(b.releasedate)
-            if (dateA< dateB) return 1
-            else if (dateA > dateB) return -1
-            return 0
-          }
-        state.gameList=action.payload.games.sort(sortByDate)
+        state.gameList=action.payload.games
+        
+          
         
     })
     .addCase(GetAllGames.rejected,(state,action)=>{
@@ -73,4 +70,4 @@ extraReducers:(builder)=>{
 }
 })
 export default gameSlice.reducer
-// export const {logout}=gameSlice.actions
+// export const {GetLatestGames}=gameSlice.actions

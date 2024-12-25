@@ -5,7 +5,7 @@ const gameSchema= mongoose.Schema({
     price:{type:Number,required:true},
     description:{type:String,required:true},
     releasedate:{type:Date,required:true},
-    image: { type: String },
+    image: { type: String ,required:true},
     video:{type: String},
     // Relationships
     genre: [

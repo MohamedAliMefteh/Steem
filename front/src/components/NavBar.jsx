@@ -1,25 +1,75 @@
-import React from 'react'
+import React, { useEffect, useState } from 'react'
+import { CiShoppingCart } from "react-icons/ci";
 import { useDispatch, useSelector } from 'react-redux'
 import { Link } from 'react-router-dom'
+import Cart from './Cart';
+import { CreateOrder } from '../redux/slices/orderSlice'
 import { logout } from '../redux/slices/authSlice'
+
 
 const NavBar = () => {
   const {isAuth,userInfo}=useSelector((state)=>state.auth)
+  const {items}=useSelector((state)=>state.cart)
+  const [isClicked,setIsClicked]=useState(false)
+  const totalPrice = items.reduce((sum, item) => sum + item.price, 0);
+  const [gameList,setGameList]=useState({})
   const dispatch =useDispatch()
+
+  const handleCartVisibility=()=>{
+    if (items.length>0){
+      if(!isClicked)
+        return setIsClicked(true)
+       
+       else return setIsClicked(false)
+     }
+     return setIsClicked(false)
+    }
+    
+    // console.log(gameList)
+    useEffect(()=>{
+    const  newList={gameList:items.map((item)=>item._id)}
+    
+    setGameList(newList)
+    },[items])
+    
+
+    const handleOrder=(gameList)=>{
+      dispatch(CreateOrder(gameList))
+    }
+
+
+
+  
   return (
     <div className='NavBar'>
       <div>STEEM</div>
-      <Link to={"/"} className='.store' >Store</Link> 
-      <div className='rightsidebar'>{(isAuth)? 
+      <div className='homeandstore'> 
+        <Link to={"/"} className='home' >Home</Link> 
+        <Link to={"/"} className='store' >Store</Link>
+        
+      </div>
+      <div className='rightsidebar'>
+        <button >
+          <CiShoppingCart className='icon' onClick={()=>handleCartVisibility()} />
+          <div className={isClicked===true ? "cart" : "hiddencart"} >
+            { items.map((item)=><Cart item={item} key={item._id}  /> )}
+            <div >Total Price:{totalPrice}</div>
+            <input type='submit' className='order' value="Order" onClick={()=>handleOrder(gameList)} ></input>
+            
+          </div>
+      </button>
+      {(isAuth)? 
           <div className='rightsidenavbar1'>
-            <button className='logout' onClick={()=>dispatch(logout())} >LogOut</button>
-            <div className='profile'>{userInfo.alias}</div>
+            <Link className='logout' onClick={()=>dispatch(logout())} >LogOut</Link>
+            <Link to={"/profile"} className='profile'>{userInfo.alias}</Link>
+            <div className='balance' >Balance:{userInfo.balance}Usd </div>
             
           </div>
           :
           <div className='rightsidenavbar2'>
-          <Link to={"/register"} >Register</Link>
-          <Link to={"/login"} >Login</Link>
+            <Link to={"/register"} >Register</Link>
+            <Link to={"/login"} >Login</Link>
+            
           </div>
 }     </div>
 </div>

@@ -18,20 +18,45 @@ const Register = () => {
   const onSubmit = (data) =>{
     dispatch(RegisterUser(data))
   }
-  console.log(errors)
+  // console.log(errors)
   return (
-    <>
-    
-    <form onSubmit={handleSubmit(onSubmit)}>
-      <input type="text" placeholder="First name" {...register("firstname", {required: true})} />
-      <input type="text" placeholder="Last name" {...register("secondname", {required: true})} />
-      <input type="text" placeholder="Email" {...register("email", {required: true, pattern: /^\S+@\S+$/i})} />
-      <input type="password" placeholder="password" {...register("password", {required: true, pattern: /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/i})} />
-      <input type="text" placeholder="Alias" {...register("alias", {required: true})} />
 
-      <input type="submit" />
-    </form>
-    </>
+    
+
+
+
+
+    <div className='formcontainer'>
+      
+      <form onSubmit={handleSubmit(onSubmit)} className='form'>
+        <div className='formtitle'>
+          <h1 >Create Account</h1>
+          </div>
+        <div>
+          <h3>First Name:</h3>
+          <input type="text" placeholder="First name" {...register("firstname", {required: true})} />
+        </div>
+        <div>
+          <h3>Last Name:</h3>
+          <input type="text" placeholder="Last name" {...register("secondname", {required: true})} />
+        </div>
+        <div>
+          <h3>Email:</h3>
+          <input type="text" placeholder="Email" {...register("email", {required: true, pattern: /^\S+@\S+$/i})} />
+        </div>
+        <div>
+          <h3>Password:</h3>
+          <input type="password" placeholder="password" {...register("password", {required: true, pattern: /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/i})} />
+        </div>
+          <div>
+          <h3>Username:</h3>
+        <input type="text" placeholder="Alias" {...register("alias", {required: true})} />
+        </div>
+        <div>
+        <input type="submit" className='submit' />
+        </div>
+      </form>
+    </div>
   )
 }
 

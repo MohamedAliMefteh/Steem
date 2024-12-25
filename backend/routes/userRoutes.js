@@ -21,7 +21,7 @@ router.post("/register", register);
 router.post("/login", login);
 
 //user info
-router.get("/", authMiddleware, getUserData);
+router.get("/getuserdata", authMiddleware, getUserData);
 
 //user orders
 router.post("/createorder", authMiddleware, createOrder);

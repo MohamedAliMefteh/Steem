@@ -100,7 +100,7 @@ const getPublisherGames = async (req, res) => {
 //create game function
 const createGame = async (req, res) => {
     try { 
-      const { title, description, price, releasedate, genre } =
+      const { title, description, price, releasedate, genre,image } =
         req.body;
         const gameExist =await Game.findOne({title:title,publisher:req.publisherId,releasedate:releasedate})
         if (gameExist){
@@ -118,6 +118,7 @@ const createGame = async (req, res) => {
         releasedate: releasedate,
         genre: genre,
         publisher:req.publisherId, 
+        image:image
       });
       res.status(201).json({ msg: `Game created succesfully:${newGame._id}`});
     } catch (error) {

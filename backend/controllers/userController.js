@@ -47,7 +47,8 @@ const register = async (req, res) => {
         firstname: createUser.firstname,
         secondname: createUser.secondname,
         email: createUser.email,
-        alias: createUser.alias,}
+        alias: createUser.alias,
+      balance:createUser.balance}
       });
     }
   } catch (error) {
@@ -83,7 +84,8 @@ const login = async (req, res) => {
           firstname: userExist.firstname,
           secondname: userExist.secondname,
           email: userExist.email,
-          alias: userExist.alias,}
+          alias: userExist.alias,
+          balance:userExist.balance}
         });
       }
     }
@@ -97,16 +99,17 @@ const login = async (req, res) => {
 //get user data function
 const getUserData = async (req, res) => {
   try {
+   
     const user = await User.findOne(
       { _id: req.userId },
-      "firstname secondname alias createdAt updatedAt"
+      "firstname secondname alias email createdAt updatedAt"
     );
     if (!user)
       res.status(400).json({ msg: "user does not exist try to register" });
     else {
-      res.status(200).json({ msg: "user info success", user: user });
+      res.status(200).json({ msg: "user info success", userData: user });
     }
-  } catch (err) {
+  } catch (error) {
     res
       .status(500)
       .json({ msg: "OUPs something went wrong", error: error.message });
@@ -118,7 +121,7 @@ const getGame = async (req, res) => {
   try {
     const games = await Game.find(
       {},
-      "title price description releasedate genre publisher"
+      "title price description releasedate genre publisher image"
     ).populate("publisher", "companyname description").populate("genre","title");
     res.status(201).json({ msg: "get all games", games: games });
   } catch (error) {
@@ -131,7 +134,7 @@ const getGame = async (req, res) => {
 //create order function
 const createOrder = async (req, res) => {
   try {
-
+    
     const userExist = await User.findOne({ _id:req.userId });
     if (!userExist)
       {return res.status(400).json({ msg: "user not found ,try to register" })}
@@ -217,7 +220,7 @@ const getUserLibrary = async (req, res) => {
       { user: userId },
       "games"
     ).populate("games", { publisher: 0 });
-    res.status(201).json({ msg: "user Library found", library: userLibrary });
+    res.status(201).json({ msg: "user Library found", userLibrary: userLibrary });
   } catch (error) {
     res
       .status(500)
@@ -282,7 +285,7 @@ const updateUserLibrary = async (req, res) => {
 //update wishlist function
 const updateUserWishlist = async (req, res) => {
   try {
-    const userId = req.body;
+    const userId = req.userId;
     const { gameId } = req.body;
     const game = await Game.findById(gameId);
     const user = await User.findById(userId);

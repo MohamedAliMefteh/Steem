@@ -82,6 +82,7 @@ const createMultipleGames = async (req, res) => {
         releasedate: game.releasedate,
         genre: game.genre,
         publisher:game.publisherId, 
+        image:game.image
       });}
       res.status(201).json({ msg: `Games created succesfully`});
     } catch (error) {

@@ -1,12 +1,17 @@
 import {configureStore} from "@reduxjs/toolkit"
 import authSlice from "./slices/authSlice"
 import gameSlice from "./slices/gameSlice"
+import profileSlice from "./slices/profileSlice"
+import cartSlice from "./slices/cartSlice"
+import orderSlice from "./slices/orderSlice"
 
 export default configureStore({reducer:{
     auth:authSlice,
     games:gameSlice,
-    // library:librarySlice,
-    // wishlist:wishlistSlice,
+    profile:profileSlice,
+    cart:cartSlice,
+    order:orderSlice,
+   
     
 
 }})
