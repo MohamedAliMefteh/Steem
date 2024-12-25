@@ -5,11 +5,13 @@ import { Link } from 'react-router-dom'
 import Cart from './Cart';
 import { CreateOrder } from '../redux/slices/orderSlice'
 import { logout } from '../redux/slices/authSlice'
+import { GetUserData,GetUserLibrary,GetUserWishlist} from '../redux/slices/profileSlice'
 
 
 const NavBar = () => {
   const {isAuth,userInfo}=useSelector((state)=>state.auth)
   const {items}=useSelector((state)=>state.cart)
+  const {userData,userDataIsLoading,userLibrary,userLibraryIsLoading,userWishlist,userWishlistIsLoading}=useSelector((state)=>state.profile)
   const [isClicked,setIsClicked]=useState(false)
   const totalPrice = items.reduce((sum, item) => sum + item.price, 0);
   const [gameList,setGameList]=useState({})
@@ -25,7 +27,10 @@ const NavBar = () => {
      return setIsClicked(false)
     }
     
-    // console.log(gameList)
+    useEffect(()=>{
+          dispatch(GetUserData())
+       },[])
+    
     useEffect(()=>{
     const  newList={gameList:items.map((item)=>item._id)}
     
@@ -62,7 +67,7 @@ const NavBar = () => {
           <div className='rightsidenavbar1'>
             <Link className='logout' onClick={()=>dispatch(logout())} >LogOut</Link>
             <Link to={"/profile"} className='profile'>{userInfo.alias}</Link>
-            <div className='balance' >Balance:{userInfo.balance}Usd </div>
+            <div className='balance' >Balance:{userData.balance}Usd </div>
             
           </div>
           :

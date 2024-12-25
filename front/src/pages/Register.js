@@ -18,7 +18,7 @@ const Register = () => {
   const onSubmit = (data) =>{
     dispatch(RegisterUser(data))
   }
-  // console.log(errors)
+
   return (
 
     

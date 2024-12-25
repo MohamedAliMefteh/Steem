@@ -4,7 +4,6 @@ require("dotenv").config();
 
 module.exports.authMiddleware= async(req,res,next)=>{
     try{
-        console.log("authmiddleware :",req.headers)
         const token = req.headers.token
         if(!token) res.status(401).json({msg:"not authorized"})
             else{

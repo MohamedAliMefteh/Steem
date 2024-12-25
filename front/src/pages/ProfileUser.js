@@ -48,7 +48,7 @@ const ProfileUser = () => {
   return (
     <div className='profilepage'>
       <section className='cover'>
-        <img className='coverpic' src='https://i.pinimg.com/originals/5b/26/db/5b26db6a8d31766f327832b9bddb3c7b.jpg'/>
+        <img className='coverpic' src='https://cdn.wallpaper.tn/large/4K-Wallpaper-Gaming-88685.jpg'/>
       </section>
       <section className='container'>
         <div className='sections'>

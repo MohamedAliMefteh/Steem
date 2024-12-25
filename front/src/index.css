@@ -247,6 +247,9 @@ box-shadow: inset 0px 0px 14px 11px rgba(129, 135, 187, 1);
   height: 600px;
   overflow: scroll;
 }
+.carousel::-webkit-scrollbar{
+  display: none;
+}
 
 
 
@@ -408,20 +411,21 @@ div >h3{
   flex-direction: column;
   height: 100vh;
   background-color: var(--light-color);
-  overflow: hidden;
+  overflow-x: hidden;
 }
 .cover{
   height: 30vh;
 
 }
 .container{
-  height: 70vh;
+  height: 100vh;
   background-color:var(--light-color) ;
   display: flex;
   flex-direction: column;
 }
 .coverpic{
-
+  height: 50vh;
+width: 100vw;
  object-fit: cover;
  
 }
@@ -462,7 +466,7 @@ div >h3{
   align-items: center;
   justify-content: start;
   gap: 50px;
-  height: 100%;
+ 
   background-color: var(--light-color);
   -webkit-box-shadow: 0px -7px 15px -9px rgba(66, 68, 90, 1);
 -moz-box-shadow: 0px -7px 15px -9px rgba(66, 68, 90, 1);
@@ -490,6 +494,7 @@ padding: 50px;
   display: flex;
   align-self: center;
   gap: 20px;
+  flex-wrap: wrap;
 }
 .libgamecard{
   height: 400px;

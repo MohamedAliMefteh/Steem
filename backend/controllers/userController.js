@@ -102,7 +102,7 @@ const getUserData = async (req, res) => {
    
     const user = await User.findOne(
       { _id: req.userId },
-      "firstname secondname alias email createdAt updatedAt"
+      "firstname secondname alias email createdAt updatedAt balance"
     );
     if (!user)
       res.status(400).json({ msg: "user does not exist try to register" });

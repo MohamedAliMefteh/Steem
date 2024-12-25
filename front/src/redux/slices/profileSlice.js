@@ -54,11 +54,11 @@ export const AddToLibrary = createAsyncThunk("AtToLibrary",async(data,{isRejecte
     try{
         const token = localStorage.getItem('token');
         
-        const res =await axios.put("/user/updateuserlibrary", {
+        const res =await axios.put("/user/updateuserlibrary",data, {
             headers: {
               token: token, // Add token to the 'token' header
             }
-          },data)
+          })
         return res.data
     }
     catch(error){
@@ -92,6 +92,7 @@ extraReducers:(builder)=>{
         state.userDataIsLoading=false
         state.error=null
         state.userData=action.payload.userData
+       
         // localStorage.setItem("userData",JSON.stringify(state.userData))
     })
     .addCase(GetUserData.rejected,(state,action)=>{

@@ -57,8 +57,9 @@ const GameCard = ({game}) => {
 
 
   const handleAddToLibrary = (game)=>{
+    const gameId={"gameId":`${game._id}`}
     if (!isInLibrary){
-      dispatch(AddToLibrary(game))
+      dispatch(AddToLibrary(gameId))
       
     }
   }
